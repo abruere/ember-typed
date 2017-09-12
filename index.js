@@ -13,12 +13,19 @@ module.exports = {
   },
 
   treeForVendor(vendorTree) {
+    let trees = [];
     let typedTree = new Funnel('bower_components/typed.js/js', {
       files: ['typed.js']
     });
 
+    if (vendorTree) {
+      trees.push(vendorTree);
+    }
+
     typedTree = map(typedTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
 
-    return new MergeTrees([vendorTree, typedTree]);
+    trees.push(typedTree);
+
+    return new MergeTrees(trees);
   },
 };
